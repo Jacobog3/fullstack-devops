@@ -22,6 +22,12 @@ jobs:
             echo "Invalid branch name. Must start with feature/ or bugfix/";
             exit 1;
           fi
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::524368706651:role/GithubOIDC
+          role-session-name: fullstack-challenge
+          aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
