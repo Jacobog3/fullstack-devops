@@ -1,0 +1,17 @@
+name: Feature/Bugfix to Devel
+
+on:
+  pull_request:
+    branches:
+      - devel
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch naming convention
+        run: |
+          if [[ ! "${GITHUB_REF##*/}" =~ ^(feature|bugfix)/[a-z0-9_\-]+$ ]]; then
+            echo "Branch name does not follow the naming convention (feature/ or bugfix/).";
+            exit 1;
+          fi
