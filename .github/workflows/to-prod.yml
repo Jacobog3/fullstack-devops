@@ -1,9 +1,9 @@
-name: Devel to Stage
+name: Stage to Prod
 
 on:
   pull_request:
     branches:
-      - stage
+      - prod
 
 jobs:
   validate-base-branch:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Ensure PR is from devel
         run: |
-          if [[ "${{ github.base_ref }}" != "devel" ]]; then
-            echo "Only dev can merge into stage.";
+          if [[ "${{ github.base_ref }}" != "stage" ]]; then
+            echo "Only stage can merge into prod.";
             exit 1;
           fi
