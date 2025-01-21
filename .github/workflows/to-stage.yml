@@ -5,6 +5,10 @@ on:
     branches:
       - stage
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   validate-base-branch:
     runs-on: ubuntu-latest
