@@ -1,0 +1,17 @@
+name: Feature/Bugfix to Devel
+
+on:
+  pull_request:
+    branches:
+      - stage
+
+jobs:
+  validate-base-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PR is from dev
+        run: |
+          if [[ "${{ github.base_ref }}" != "dev" ]]; then
+            echo "Only dev can merge into stage.";
+            exit 1;
+          fi
