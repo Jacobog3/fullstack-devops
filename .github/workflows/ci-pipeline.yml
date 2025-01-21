@@ -17,28 +17,23 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Install dependencies
-        run: |
-          cd code
-          npm install
+        working-directory: code
+        run: npm install
 
       - name: Run ESLint
-        run: |
-          cd code
-          npm run lint
+        working-directory: code
+        run: npm run lint
 
       - name: Run Prettier
-        run: |
-          cd code
-          npm run prettier
+        working-directory: code
+        run: npm run prettier
 
       - name: Run Jest tests
         env:
           CI: true
-        run: |
-          cd code
-          npm run test
+        working-directory: code
+        run: npm run test
 
       - name: Build application
-        run: |
-          cd code
-          npm run build
+        working-directory: code
+        run: npm run build
