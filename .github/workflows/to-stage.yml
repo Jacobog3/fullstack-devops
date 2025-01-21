@@ -9,9 +9,9 @@ jobs:
   validate-base-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure PR is from dev
+      - name: Ensure PR is from devel
         run: |
-          if [[ "${{ github.base_ref }}" != "dev" ]]; then
+          if [[ "${{ github.base_ref }}" != "devel" ]]; then
             echo "Only dev can merge into stage.";
             exit 1;
           fi
