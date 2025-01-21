@@ -5,6 +5,10 @@ on:
     branches:
       - devel
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -27,6 +31,13 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::524368706651:role/GithubOIDC
+          role-session-name: fullstack-challenge
+          aws-region: us-east-1
 
       - name: Initialize Terraform
         working-directory: terraform/infrastructure/devel

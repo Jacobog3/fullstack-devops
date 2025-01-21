@@ -5,13 +5,17 @@ on:
     branches:
       - stage
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   validate-base-branch:
     runs-on: ubuntu-latest
     steps:
       - name: Ensure PR is from devel
         run: |
-          if [[ "${{ github.base_ref }}" != "devel" ]]; then
+          if [[ "${{ github.base_ref }}" == "devel" ]]; then
             echo "Only dev can merge into stage.";
             exit 1;
           fi
