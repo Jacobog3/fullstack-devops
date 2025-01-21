@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Ensure PR is from devel
         run: |
-          if [[ "${{ github.base_ref }}" != "stage" ]]; then
+          if [[ "${{ github.base_ref }}" == "stage" ]]; then
             echo "Only stage can merge into prod.";
             exit 1;
           fi
