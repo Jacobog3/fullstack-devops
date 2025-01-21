@@ -1,0 +1,41 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    paths:
+      - "code/**"
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 15
+
+      - name: Install dependencies
+        working-directory: code
+        run: npm install
+
+      - name: Run ESLint
+        working-directory: code
+        run: npm run lint
+
+      - name: Run Prettier
+        working-directory: code
+        run: npm run prettier
+
+      - name: Run Jest tests
+        env:
+          CI: true
+        working-directory: code
+        run: npm run test
+
+      - name: Build application
+        working-directory: code
+        run: npm run build

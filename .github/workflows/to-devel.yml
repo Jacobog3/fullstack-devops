@@ -1,0 +1,46 @@
+name: Feature/Bugfix to Devel
+
+on:
+  pull_request:
+    branches:
+      - devel
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate branch name
+        run: |
+          if [[ ! "${{ github.head_ref }}" =~ ^(feature|bugfix)/[a-z0-9_\-]+$ ]]; then
+            echo "Invalid branch name. Must start with feature/ or bugfix/";
+            exit 1;
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::524368706651:role/GithubOIDC
+          role-session-name: fullstack-challenge
+          aws-region: us-east-1
+
+      - name: Initialize Terraform
+        working-directory: terraform/infrastructure/devel
+        run: terraform init
+
+      - name: Plan Terraform
+        working-directory: terraform/infrastructure/devel
+        run: terraform plan -var-file="vars.tfvars"
+
+      - name: Apply Terraform
+        working-directory: terraform/infrastructure/devel
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
