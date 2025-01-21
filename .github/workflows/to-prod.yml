@@ -15,3 +15,18 @@ jobs:
             echo "Only stage can merge into prod.";
             exit 1;
           fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialize Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform init
+
+      - name: Plan Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform plan -var-file="vars.tfvars"
+
+      - name: Apply Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
