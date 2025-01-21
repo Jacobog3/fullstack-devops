@@ -1,0 +1,43 @@
+name: Devel to Stage
+
+on:
+  pull_request:
+    branches:
+      - stage
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate-base-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PR is from devel
+        run: |
+          if [[ "${{ github.base_ref }}" == "devel" ]]; then
+            echo "Only dev can merge into stage.";
+            exit 1;
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::524368706651:role/GithubOIDC
+          role-session-name: fullstack-challenge
+          aws-region: us-east-1
+
+      - name: Initialize Terraform
+        working-directory: terraform/infrastructure/stage
+        run: terraform init
+
+      - name: Plan Terraform
+        working-directory: terraform/infrastructure/stage
+        run: terraform plan -var-file="vars.tfvars"
+
+      - name: Apply Terraform
+        working-directory: terraform/infrastructure/stage
+        run: terraform apply -var-file="vars.tfvars" -auto-approve

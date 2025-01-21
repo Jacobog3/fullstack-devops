@@ -1,0 +1,43 @@
+name: Stage to Prod
+
+on:
+  pull_request:
+    branches:
+      - prod
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate-base-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PR is from devel
+        run: |
+          if [[ "${{ github.base_ref }}" != "stage" ]]; then
+            echo "Only stage can merge into prod.";
+            exit 1;
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::524368706651:role/GithubOIDC
+          role-session-name: fullstack-challenge
+          aws-region: us-east-1
+
+      - name: Initialize Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform init
+
+      - name: Plan Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform plan -var-file="vars.tfvars"
+
+      - name: Apply Terraform
+        working-directory: terraform/infrastructure/prod
+        run: terraform apply -var-file="vars.tfvars" -auto-approve
