@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Ensure PR is from devel
         run: |
-          if [[ "${{ github.base_ref }}" != "devel" ]]; then
+          if [[ "${{ github.base_ref }}" == "devel" ]]; then
             echo "Only dev can merge into stage.";
             exit 1;
           fi
