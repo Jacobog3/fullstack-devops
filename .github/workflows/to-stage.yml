@@ -32,12 +32,17 @@ jobs:
 
       - name: cd to path
         run: |
+          ls
+          echo "1"
           cd ..
           ls
+          echo "1"
           cd ..
           ls
+          echo "1"
           pwd
           ls
+          echo "1"
           cd fullstack-devops
           ls
           cd ..
