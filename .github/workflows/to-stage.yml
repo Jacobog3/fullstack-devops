@@ -33,7 +33,7 @@ jobs:
       - name: cd to path
         run: |
           pwd
-          cd terraform/infrastructure/stage
+          cd ../terraform/infrastructure/stage
 
       - name: Initialize Terraform
         run: terraform init
