@@ -32,6 +32,10 @@ jobs:
 
       - name: cd to path
         run: |
+          cd ..
+          ls
+          cd ..
+          ls
           pwd
           ls
           cd fullstack-devops
