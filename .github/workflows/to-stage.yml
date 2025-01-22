@@ -32,6 +32,8 @@ jobs:
 
       - name: cd to path
         run: |
+          cd fullstack-devops
+          echo "10"
           ls
           echo "1"
           cd ..
