@@ -31,7 +31,9 @@ jobs:
           aws-region: us-east-1
 
       - name: cd to path
-        run: cd terraform/infrastructure/stage
+        run: |
+          pwd
+          cd terraform/infrastructure/stage
 
       - name: Initialize Terraform
         run: terraform init
