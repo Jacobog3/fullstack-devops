@@ -12,6 +12,7 @@ permissions:
 jobs:
   validate-base-branch:
     runs-on: ubuntu-latest
+
     steps:
       - name: Ensure PR is from devel
         run: |
